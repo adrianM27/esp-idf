@@ -85,6 +85,7 @@ typedef struct{
     gpio_pullup_t sda_pullup_en;  /*!< Internal GPIO pull mode for I2C sda signal*/
     gpio_num_t scl_io_num;        /*!< GPIO number for I2C scl signal */
     gpio_pullup_t scl_pullup_en;  /*!< Internal GPIO pull mode for I2C scl signal*/
+    uint32_t timeout_us;   /*!< I2C timeout in microseconds of I2C clock, after which the I2C will be restarted */
 
     union {
         struct {

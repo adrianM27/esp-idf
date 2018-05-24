@@ -639,7 +639,8 @@ esp_err_t i2c_param_config(i2c_port_t i2c_num, const i2c_config_t* i2c_conf)
         I2C[i2c_num]->fifo_conf.rx_fifo_full_thrhd = I2C_FIFO_FULL_THRESH_VAL;
         I2C[i2c_num]->fifo_conf.tx_fifo_empty_thrhd = I2C_FIFO_EMPTY_THRESH_VAL;
         I2C[i2c_num]->ctr.trans_start = 0;
-        I2C[i2c_num]->timeout.tout = I2C_SLAVE_TIMEOUT_DEFAULT;
+        I2C[i2c_num]->timeout.tout = i2c_conf->timeout_us > 0 ? ((I2C_APB_CLK_FREQ / 1000000)
+                * i2c_conf->timeout_us) : I2C_SLAVE_TIMEOUT_DEFAULT;
         //set timing for data
         I2C[i2c_num]->sda_hold.time = I2C_SLAVE_SDA_HOLD_DEFAULT;
         I2C[i2c_num]->sda_sample.time = I2C_SLAVE_SDA_SAMPLE_DEFAULT;
@@ -647,7 +648,8 @@ esp_err_t i2c_param_config(i2c_port_t i2c_num, const i2c_config_t* i2c_conf)
         I2C[i2c_num]->fifo_conf.nonfifo_en = 0;
         int cycle = (I2C_APB_CLK_FREQ / i2c_conf->master.clk_speed);
         int half_cycle = cycle / 2;
-        I2C[i2c_num]->timeout.tout = cycle * I2C_MASTER_TOUT_CNUM_DEFAULT;
+        I2C[i2c_num]->timeout.tout = i2c_conf->timeout_us > 0 ? ((I2C_APB_CLK_FREQ / 1000000)
+                * i2c_conf->timeout_us) : (cycle * I2C_MASTER_TOUT_CNUM_DEFAULT);
         //set timing for data
         I2C[i2c_num]->sda_hold.time = half_cycle / 2;
         I2C[i2c_num]->sda_sample.time = half_cycle / 2;
